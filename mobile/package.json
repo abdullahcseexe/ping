@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~56.0.15",
+<<<<<<< HEAD
+=======
+    "@tanstack/react-query": "^5.101.0",
+>>>>>>> b470985a4dc24f47fd4f8a9ccb5fc7f10dd5bdc6
     "expo": "~56.0.8",
     "expo-constants": "~56.0.16",
     "expo-device": "~56.0.4",
@@ -30,6 +34,10 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+<<<<<<< HEAD
+=======
+    "babel-preset-expo": "^56.0.14",
+>>>>>>> b470985a4dc24f47fd4f8a9ccb5fc7f10dd5bdc6
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.17",
     "typescript": "~6.0.3"
