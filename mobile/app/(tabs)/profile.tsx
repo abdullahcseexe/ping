@@ -2,6 +2,7 @@ import { useAuth, useUser } from "@clerk/expo";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const MENU_SECTIONS = [
   {
@@ -33,6 +34,7 @@ const MENU_SECTIONS = [
 const ProfileTab = () => {
   const { signOut } = useAuth();
   const { user } = useUser();
+  const { top } = useSafeAreaInsets();
 
   return (
     <ScrollView
@@ -44,7 +46,7 @@ const ProfileTab = () => {
     >
       {/* HEADER  */}
       <View className="relative">
-        <View className="items-center mt-10">
+        <View className="items-center" style={{ marginTop: top + 8 }}>
           <View className="relative">
             <View className="rounded-full border-2 border-primary">
               <Image

@@ -1,9 +1,9 @@
-import EmptyUI from "../components/EmptyUI";
-import MessageBubble from "../components/MessageBubble";
-import { useCurrentUser } from "../hooks/useAuth";
-import { useMessages } from "../hooks/useMessages";
-import { useSocketStore } from "../lib/socket";
-import { MessageSender } from "../types";
+import EmptyUI from "../../components/EmptyUI";
+import MessageBubble from "../../components/MessageBubble";
+import { useCurrentUser } from "../../hooks/useAuth";
+import { useMessages } from "../../hooks/useMessages";
+import { useSocketStore } from "../../lib/socket";
+import { MessageSender } from "../../types";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
