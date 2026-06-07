@@ -150,10 +150,10 @@ const ChatDetailScreen = () => {
       {/* Message + Keyboard input */}
 
       <KeyboardAvoidingView
-        className="flex-1"
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={0}
-      >
+  className="flex-1"
+  behavior="padding"
+  keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
+>
         <View className="flex-1 bg-surface">
           {isLoading ? (
             <View className="flex-1 items-center justify-center">

@@ -4,7 +4,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { Chat, Message, MessageSender } from "../types";
 import * as Sentry from "@sentry/react-native";
 
-const SOCKET_URL = "https://whisper-ijeje.sevalla.app";
+const SOCKET_URL = "https://ping-45s2l.sevalla.app";
 
 interface SocketState {
   socket: Socket | null;
@@ -226,3 +226,5 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     }
   },
 }));
+
+
