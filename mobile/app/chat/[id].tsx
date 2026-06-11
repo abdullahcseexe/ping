@@ -19,7 +19,7 @@ import {
   TextInput,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 type ChatParams = {
   id: string;
@@ -30,6 +30,7 @@ type ChatParams = {
 
 const ChatDetailScreen = () => {
   const { id: chatId, avatar, name, participantId } = useLocalSearchParams<ChatParams>();
+  const insets = useSafeAreaInsets();
 
   const [messageText, setMessageText] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -120,7 +121,7 @@ const ChatDetailScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-surface" edges={["top", "bottom"]}>
+    <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
       {/* Header */}
       <View className="flex-row items-center px-4 py-2 bg-surface border-b border-surface-light">
         <Pressable onPress={() => router.back()}>
@@ -151,8 +152,8 @@ const ChatDetailScreen = () => {
 
       <KeyboardAvoidingView
         className="flex-1"
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={0}
+        behavior={Platform.OS === "ios" ? "padding" : "padding"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <View className="flex-1 bg-surface">
           {isLoading ? (
@@ -185,7 +186,10 @@ const ChatDetailScreen = () => {
           )}
 
           {/* Input bar */}
-          <View className="px-3 pb-1 pt-1 bg-surface border-t border-surface-light">
+          <View
+            className="px-3 pt-1 bg-surface border-t border-surface-light"
+            style={{ paddingBottom: Math.max(insets.bottom, 8) }}
+          >
             <View className="flex-row items-center bg-surface-card rounded-3xl px-3 py-1 gap-3 shadow-sm shadow-black/5">
               <Pressable className="w-9 h-9 rounded-full items-center justify-center bg-surface text-primary shadow-sm shadow-black/10">
                 <Ionicons name="add" size={20} color="#F4A261" />
