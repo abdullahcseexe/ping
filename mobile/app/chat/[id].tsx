@@ -150,10 +150,10 @@ const ChatDetailScreen = () => {
       {/* Message + Keyboard input */}
 
       <KeyboardAvoidingView
-  className="flex-1"
-  behavior="padding"
-  keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
->
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={0}
+      >
         <View className="flex-1 bg-surface">
           {isLoading ? (
             <View className="flex-1 items-center justify-center">
@@ -170,7 +170,7 @@ const ChatDetailScreen = () => {
           ) : (
             <ScrollView
               ref={scrollViewRef}
-              contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, gap: 8 }}
+              contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 12, gap: 8 }}
               onContentSizeChange={() => {
                 scrollViewRef.current?.scrollToEnd({ animated: false });
               }}
@@ -185,26 +185,28 @@ const ChatDetailScreen = () => {
           )}
 
           {/* Input bar */}
-          <View className="px-3 pb-3 pt-2 bg-surface border-t border-surface-light">
-            <View className="flex-row items-end bg-surface-card rounded-3xl px-3 py-1.5 gap-2">
-              <Pressable className="w-8 h-8 rounded-full items-center justify-center">
-                <Ionicons name="add" size={22} color="#F4A261" />
+          <View className="px-3 pb-1 pt-1 bg-surface border-t border-surface-light">
+            <View className="flex-row items-center bg-surface-card rounded-3xl px-3 py-1 gap-3 shadow-sm shadow-black/5">
+              <Pressable className="w-9 h-9 rounded-full items-center justify-center bg-surface text-primary shadow-sm shadow-black/10">
+                <Ionicons name="add" size={20} color="#F4A261" />
               </Pressable>
 
               <TextInput
                 placeholder="Type a message"
                 placeholderTextColor="#6B6B70"
-                className="flex-1 text-foreground text-sm mb-2"
+                className="flex-1 text-foreground text-sm"
                 multiline
-                style={{ maxHeight: 100 }}
+                textAlignVertical="center"
+                style={{ minHeight: 42, maxHeight: 100, paddingVertical: 8 }}
                 value={messageText}
                 onChangeText={handleTyping}
                 onSubmitEditing={handleSend}
+                blurOnSubmit={false}
                 editable={!isSending}
               />
 
               <Pressable
-                className="w-8 h-8 rounded-full items-center justify-center bg-primary"
+                className="w-10 h-10 rounded-full items-center justify-center bg-primary disabled:opacity-50"
                 onPress={handleSend}
                 disabled={!messageText.trim() || isSending}
               >
