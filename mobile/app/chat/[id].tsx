@@ -1,3 +1,6 @@
+
+
+
 // import EmptyUI from "../../components/EmptyUI";
 // import MessageBubble from "../../components/MessageBubble";
 // import { useCurrentUser } from "../../hooks/useAuth";
@@ -138,14 +141,6 @@
 //             </Text>
 //           </View>
 //         </View>
-//         <View className="flex-row items-center gap-3">
-//           <Pressable className="w-9 h-9 rounded-full items-center justify-center">
-//             <Ionicons name="call-outline" size={20} color="#A0A0A5" />
-//           </Pressable>
-//           <Pressable className="w-9 h-9 rounded-full items-center justify-center">
-//             <Ionicons name="videocam-outline" size={20} color="#A0A0A5" />
-//           </Pressable>
-//         </View>
 //       </View>
 
 //       {/* Message + Keyboard input */}
@@ -231,16 +226,19 @@
 // export default ChatDetailScreen;
 
 
+
 import EmptyUI from "../../components/EmptyUI";
 import MessageBubble from "../../components/MessageBubble";
 import { useCurrentUser } from "../../hooks/useAuth";
 import { useMessages } from "../../hooks/useMessages";
 import { useSocketStore } from "../../lib/socket";
+import { useApi } from "../../lib/axios";
 import { MessageSender } from "../../types";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   View,
   Text,
@@ -250,6 +248,7 @@ import {
   Platform,
   ActivityIndicator,
   TextInput,
+  Alert,
 } from "react-native";
 
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
@@ -271,6 +270,8 @@ const ChatDetailScreen = () => {
 
   const { data: currentUser } = useCurrentUser();
   const { data: messages, isLoading } = useMessages(chatId);
+  const queryClient = useQueryClient();
+  const { apiWithAuth } = useApi();
 
   const { joinChat, leaveChat, sendMessage, sendTyping, isConnected, onlineUsers, typingUsers } =
     useSocketStore();
@@ -279,6 +280,18 @@ const ChatDetailScreen = () => {
   const isTyping = typingUsers.get(chatId) === participantId;
 
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleDeleteMessage = async (messageId: string) => {
+    try {
+      await apiWithAuth({ method: "DELETE", url: `/messages/${messageId}` });
+      queryClient.setQueryData(["messages", chatId], (old: any[]) =>
+        old ? old.filter((m) => m._id !== messageId) : old
+      );
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.message || "Unknown error";
+      Alert.alert("Delete failed", msg);
+    }
+  };
 
   // join chat room on mount, leave on unmount
   useEffect(() => {
@@ -396,7 +409,7 @@ const ChatDetailScreen = () => {
           ) : (
             <ScrollView
               ref={scrollViewRef}
-              contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 12, gap: 8 }}
+              contentContainerStyle={{ paddingVertical: 12, paddingBottom: 12, gap: 8 }}
               onContentSizeChange={() => {
                 scrollViewRef.current?.scrollToEnd({ animated: false });
               }}
@@ -405,7 +418,7 @@ const ChatDetailScreen = () => {
                 const senderId = (message.sender as MessageSender)._id;
                 const isFromMe = currentUser ? senderId === currentUser._id : false;
 
-                return <MessageBubble key={message._id} message={message} isFromMe={isFromMe} />;
+                return <MessageBubble key={message._id} message={message} isFromMe={isFromMe} onDelete={handleDeleteMessage} />;
               })}
             </ScrollView>
           )}
