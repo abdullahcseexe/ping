@@ -7,3 +7,5 @@ const router = Router();
 router.get("/", protectRoute, getUsers);
 
 export default router;
+
+

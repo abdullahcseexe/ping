@@ -176,7 +176,7 @@ const ProfileTab = () => {
   };
 
   const contactUs = () => {
-    Linking.openURL("mailto:support@pingapp.com?subject=Ping%20Support");
+    Linking.openURL("mailto:abduladilcse.exe@gmail.com?subject=Ping%20Support");
   };
 
   return (
